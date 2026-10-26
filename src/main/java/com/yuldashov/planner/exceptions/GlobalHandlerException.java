@@ -1,6 +1,6 @@
 package com.yuldashov.planner.exceptions;
 
-import com.yuldashov.planner.dto.ErrorResponse;
+import com.yuldashov.planner.dto.exception.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -36,5 +36,15 @@ public class GlobalHandlerException {
                 e.getMessage()
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UnautorizedException.class)
+    public ResponseEntity<?> unautorizedUser(UnautorizedException e) {
+        ErrorResponse errorResponse = new ErrorResponse(
+            401,
+                "Юзер не авторизован",
+                e.getMessage()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 }

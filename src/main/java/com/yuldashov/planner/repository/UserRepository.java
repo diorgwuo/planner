@@ -1,6 +1,5 @@
 package com.yuldashov.planner.repository;
 
-import com.yuldashov.planner.config.CustomUserDetails;
 import com.yuldashov.planner.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

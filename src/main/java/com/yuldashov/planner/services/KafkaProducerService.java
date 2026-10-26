@@ -1,6 +1,6 @@
 package com.yuldashov.planner.services;
 
-import com.yuldashov.planner.dto.EmailMessage;
+import com.yuldashov.planner.dto.email.EmailMessage;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 

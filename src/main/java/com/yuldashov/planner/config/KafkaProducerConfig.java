@@ -1,6 +1,6 @@
 package com.yuldashov.planner.config;
 
-import com.yuldashov.planner.dto.EmailMessage;
+import com.yuldashov.planner.dto.email.EmailMessage;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;

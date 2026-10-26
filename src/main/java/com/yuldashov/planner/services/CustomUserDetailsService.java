@@ -1,6 +1,6 @@
 package com.yuldashov.planner.services;
 
-import com.yuldashov.planner.config.CustomUserDetails;
+import com.yuldashov.planner.models.User;
 import com.yuldashov.planner.repository.UserRepository;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,9 +16,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.userRepository = repository;
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new CustomUserDetails(userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Не нашли такого пользователя")));
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Не нашли такого пользователя"));
     }
 }

@@ -1,32 +1,25 @@
 package com.yuldashov.planner.services;
 
-import com.yuldashov.planner.dto.EmailMessage;
-import com.yuldashov.planner.dto.JwtRequest;
-import com.yuldashov.planner.dto.JwtResponse;
-import com.yuldashov.planner.dto.RegisterRequest;
+import com.yuldashov.planner.dto.auth.UserInfoResponse;
+import com.yuldashov.planner.dto.email.EmailMessage;
 import com.yuldashov.planner.exceptions.EmailExistException;
 import com.yuldashov.planner.exceptions.UsernameExistException;
 import com.yuldashov.planner.models.User;
 import com.yuldashov.planner.repository.UserRepository;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import com.yuldashov.planner.utils.ValidateAuth;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@RequiredArgsConstructor
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final KafkaProducerService kafkaProducerService;
-
-
-    public UserService(UserRepository userRepository, JwtService jwtService, PasswordEncoder passwordEncoder, KafkaProducerService kafkaProducerService) {
-        this.userRepository = userRepository;
-        this.jwtService = jwtService;
-        this.passwordEncoder = passwordEncoder;
-        this.kafkaProducerService = kafkaProducerService;
-    }
 
     @Transactional
     public String register(String username, String password, String email) {
@@ -50,7 +43,8 @@ public class UserService {
         return token;
     }
 
-    public User findUserByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Не найден по имени"));
+    public UserInfoResponse findUserByUsername(Authentication auth) {
+        User user = ValidateAuth.validate(auth);
+        return new UserInfoResponse(user.getId(),user.getEmail());
     }
 }

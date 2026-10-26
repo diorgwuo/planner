@@ -1,6 +1,6 @@
 package com.yuldashov.planner.services;
 
-import com.yuldashov.planner.dto.LoginRequest;
+import com.yuldashov.planner.dto.auth.LoginRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -17,11 +17,11 @@ public class AuthService {
 
     public String login(LoginRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                request.getUsername(),
-                request.getPassword()
+                request.username(),
+                request.password()
         ));
 
-        return jwtService.generateAccessToken(request.getUsername());
+        return jwtService.generateAccessToken(request.username());
 
     }
 }
