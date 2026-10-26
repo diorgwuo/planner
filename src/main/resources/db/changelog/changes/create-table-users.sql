@@ -2,9 +2,9 @@
 
 --changeset yuldashov:1
 create table users(
-    id serial primary key,
-    username varchar(50) unique not null,
-    password varchar(255) not null,
-    email varchar(255) unique not null
+    id serial PRIMARY KEY ,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL
 );
 --rollback drop table users;

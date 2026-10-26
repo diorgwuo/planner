@@ -1,7 +1,5 @@
 package com.yuldashov.planner.services;
 
-import com.yuldashov.planner.dto.JwtResponse;
-import com.yuldashov.planner.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;

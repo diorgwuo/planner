@@ -1,18 +1,14 @@
 package com.yuldashov.planner.controllers;
 
-import com.yuldashov.planner.dto.RegisterRequest;
-import com.yuldashov.planner.models.User;
+import com.yuldashov.planner.dto.auth.RegisterRequest;
+import com.yuldashov.planner.dto.auth.UserInfoResponse;
 import com.yuldashov.planner.services.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 public class UserController {
@@ -23,31 +19,20 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public ResponseEntity<?> register(
-            @Valid @RequestBody RegisterRequest registerRequest
+    @ResponseStatus(HttpStatus.OK)
+    public void register(
+            @Valid @RequestBody RegisterRequest registerRequest,
+            HttpServletResponse response
     ) {
-
-        String username = registerRequest.getUsername();
-        String password = registerRequest.getPassword();
-        String email = registerRequest.getEmail();
-
-        String token = userService.register(username, password, email);
-
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-                .build();
+        String token = userService.register(registerRequest.username(),
+                registerRequest.password(),
+                registerRequest.email());
+        response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
     }
 
     @GetMapping("/user")
-    public ResponseEntity<?> getUser(Authentication authentication) {
-        String username = authentication.getName();
-        User user = userService.findUserByUsername(username);
-        Long userId = user.getId();
-        String userEmail = user.getEmail();
-        return ResponseEntity.ok(Map.of(
-                "id", userId,
-                "email", userEmail
-        ));
+    @ResponseStatus(HttpStatus.OK)
+    public UserInfoResponse getUser(Authentication auth) {
+        return userService.findUserByUsername(auth);
     }
 }
